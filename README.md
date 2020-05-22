@@ -1,4 +1,6 @@
-# SCRIPT TOSCO PARA CALCULAR HORAS DE TRABALHO
+## SCRIPT TOSCO PARA CALCULAR HORAS DE TRABALHO
+
+![](gifs/calc-horas-trabalho-GIF.gif)
 
 ## Dependências
 
