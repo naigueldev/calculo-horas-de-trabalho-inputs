@@ -11,6 +11,10 @@
 Rode no console o seguinte comando e vá respondendo as perguntas.
 
 ```
+npm install
+```
+
+```
 node inputs.js
 ```
 
