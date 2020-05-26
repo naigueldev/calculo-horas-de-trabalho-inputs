@@ -32,102 +32,124 @@ rl.question(
                 rl.question(
                   "Qual o tempo do seu banco de horas (formato HH:mm) ? ",
                   function (tempoBancoDeHoras) {
-                    // let manhaEntrouAs = "09:11";
-                    // let manhaSaiuAs = "12:15";
-                    // let tardeEntrouAs = "13:15";
-                    // let statusBancoDeHoras = "P";
-                    // let tempoBancoDeHoras = "00:15";
-                    let bancoDeHoras = moment(tempoBancoDeHoras, "HH:mm");
+                    rl.question(
+                      "Que horário registrou o último ponto (formato HH:mm) ? ",
+                      function (ultimoPontoAs) {
+                        // let manhaEntrouAs = "09:11";
+                        // let manhaSaiuAs = "12:15";
+                        // let tardeEntrouAs = "13:15";
+                        // let statusBancoDeHoras = "P";
+                        // let tempoBancoDeHoras = "00:15";
+                        let bancoDeHoras = moment(tempoBancoDeHoras, "HH:mm");
 
-                    let end = moment(manhaSaiuAs, "HH:mm");
-                    let startTime = moment(manhaEntrouAs, "HH:mm");
+                        let end = moment(manhaSaiuAs, "HH:mm");
+                        let startTime = moment(manhaEntrouAs, "HH:mm");
 
-                    let iniciouTrabalho = startTime.format("HH:mm");
-                    let intervaloAs = end.format("HH:mm");
+                        let iniciouTrabalho = startTime.format("HH:mm");
+                        let intervaloAs = end.format("HH:mm");
 
-                    printLog(`Iniciou a trabalhar às: ${iniciouTrabalho}`);
-                    printLog(`Saiu para o intervalo às: ${intervaloAs}`);
+                        printLog(`Iniciou a trabalhar às: ${iniciouTrabalho}`);
+                        printLog(`Saiu para o intervalo às: ${intervaloAs}`);
 
-                    let trabalhoManha = moment
-                      .utc(end.diff(startTime))
-                      .format("HH:mm");
+                        let trabalhoManha = moment
+                          .utc(end.diff(startTime))
+                          .format("HH:mm");
 
-                    printLog(`DE MANHÃ TRABALHOU O TOTAL DE: ${trabalhoManha}`);
+                        printLog(
+                          `DE MANHÃ TRABALHOU O TOTAL DE: ${trabalhoManha}`
+                        );
 
-                    let totalHoras = moment(totalHoraDia, "HH:mm");
+                        let totalHoras = moment(totalHoraDia, "HH:mm");
 
-                    let totalHorasFormatted = totalHoras.format("HH:mm");
+                        let totalHorasBancoDeHoras = "";
 
-                    let totalHorasBancoDeHoras = "";
+                        if (statusBancoDeHoras.toUpperCase() == "P") {
+                          totalHorasBancoDeHoras = totalHoras.diff(
+                            bancoDeHoras
+                          );
+                        } else {
+                          totalHorasBancoDeHoras = totalHoras.add(bancoDeHoras);
+                        }
+                        let totalHorasBancoDeHorasFormatted = moment
+                          .utc(totalHorasBancoDeHoras)
+                          .format("HH:mm");
 
-                    if (statusBancoDeHoras == "P") {
-                      totalHorasBancoDeHoras = totalHoras.diff(bancoDeHoras);
-                    } else {
-                      totalHorasBancoDeHoras = totalHoras.add(bancoDeHoras);
-                    }
-                    let totalHorasBancoDeHorasFormatted = moment
-                      .utc(totalHorasBancoDeHoras)
-                      .format("HH:mm");
+                        printLog(
+                          `Banco de horas é: ${bancoDeHoras.format(
+                            "HH:mm"
+                          )} ${statusBancoDeHoras}`
+                        );
 
-                    printLog(
-                      `Banco de horas é: ${bancoDeHoras.format(
-                        "HH:mm"
-                      )} ${statusBancoDeHoras}`
+                        printLog(
+                          `Hora total para hoje, com banco de horas: ${totalHorasBancoDeHorasFormatted}`
+                        );
+
+                        let tempoTrabalhoManha = moment(trabalhoManha, "HH:mm");
+
+                        let totalHorasBancoDeHorasMoment = moment(
+                          totalHorasBancoDeHorasFormatted,
+                          "HH:mm"
+                        );
+
+                        let totalHorasTarde = moment
+                          .utc(
+                            totalHorasBancoDeHorasMoment.diff(
+                              tempoTrabalhoManha
+                            )
+                          )
+                          .format("HH:mm");
+
+                        printLog(
+                          `Segunto turno tem que trabalhar: ${totalHorasTarde}`
+                        );
+
+                        let inicioTarde = moment(tardeEntrouAs, "HH:mm");
+
+                        let inicioTardeFormat = inicioTarde.format("HH:mm");
+
+                        let trabalharAte = inicioTarde.add(totalHorasTarde);
+
+                        let trabalharAteFormatted = trabalharAte.format(
+                          "HH:mm"
+                        );
+
+                        printLog(
+                          `Iniciou segundo turno às: ${inicioTardeFormat}`
+                        );
+
+                        printLog(
+                          `Tem que trabalhar até as ${trabalharAteFormatted} para fechar ${totalHoras.hour()} horas`
+                        );
+                        // let ultimoPontoAs = "18:53";
+                        let bateuPontoFinalAs = moment(ultimoPontoAs, "HH:mm");
+
+                        let bateuPontoFinalAsFormatted = bateuPontoFinalAs.format(
+                          "HH:mm"
+                        );
+
+                        printLog(
+                          `Bateu ponto às ${bateuPontoFinalAsFormatted}`
+                        );
+
+                        let bancoDeHorasDoDia = moment
+                          .utc(bateuPontoFinalAs.diff(trabalharAte))
+                          .format("HH:mm");
+
+                        printLog(`Banco de horas do dia: ${bancoDeHorasDoDia}`);
+
+                        function printLog(msg) {
+                          console.log(
+                            "----------------------------------------------------"
+                          );
+                          console.log(msg);
+                        }
+                        console.log(
+                          "----------------------------------------------------"
+                        );
+
+                        rl.close();
+                      }
                     );
-
-                    printLog(
-                      `Hora total para hoje, com banco de horas: ${totalHorasBancoDeHorasFormatted}`
-                    );
-
-                    let tempoTrabalhoManha = moment(trabalhoManha, "HH:mm");
-
-                    let totalHorasTarde = moment
-                      .utc(totalHoras.diff(tempoTrabalhoManha))
-                      .format("HH:mm");
-
-                    printLog(
-                      `Segunto turno tem que trabalhar: ${totalHorasTarde}`
-                    );
-
-                    let inicioTarde = moment(tardeEntrouAs, "HH:mm");
-
-                    let inicioTardeFormat = inicioTarde.format("HH:mm");
-
-                    let trabalharAte = inicioTarde.add(totalHorasTarde);
-
-                    let trabalharAteFormatted = trabalharAte.format("HH:mm");
-
-                    printLog(`Iniciou segundo turno às: ${inicioTardeFormat}`);
-
-                    printLog(
-                      `Tem que trabalhar até as ${trabalharAteFormatted} para fechar ${totalHoras.hour()} horas`
-                    );
-
-                    let bateuPontoFinalAs = moment("18:53", "HH:mm");
-
-                    let bateuPontoFinalAsFormatted = bateuPontoFinalAs.format(
-                      "HH:mm"
-                    );
-
-                    printLog(`Bateu ponto às ${bateuPontoFinalAsFormatted}`);
-
-                    let bancoDeHorasDoDia = moment
-                      .utc(bateuPontoFinalAs.diff(trabalharAte))
-                      .format("HH:mm");
-
-                    printLog(`Banco de horas do dia: ${bancoDeHorasDoDia}`);
-
-                    function printLog(msg) {
-                      console.log(
-                        "----------------------------------------------------"
-                      );
-                      console.log(msg);
-                    }
-                    console.log(
-                      "----------------------------------------------------"
-                    );
-
-                    rl.close();
                   }
                 );
               }
